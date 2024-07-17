@@ -2,6 +2,7 @@ package com.omshinde.pages;
 
 import com.omshinde.actions.CommentAction;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
- //This class represents the Search Result page in the application, extending BasePage for common functionalities.
+//This class represents the Search Result page in the application, extending BasePage for common functionalities.
 
 public class SearchResultPage extends BasePage {
 
@@ -30,4 +31,15 @@ public class SearchResultPage extends BasePage {
         this.wait = new WebDriverWait(webDriver, Duration.ofSeconds(10)); // Initializes the WebDriverWait
     }
 
+    //Method to comment on a post using the provided CommentAction.
+    public SearchResultPage commentOnPost(CommentAction commentAction) {
+        buttonActions.click(commentEle); // Clicks the comment button to open the comment box
+        textBox.type(commentBoxEle, commentAction.getInput()); // Types the comment into the comment box
+
+        // Waits for the Post button to be visible and then clicks it
+        WebElement postBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[normalize-space()='Post']")));
+        buttonActions.click(postBtn); // Clicks the Post button to submit the comment
+
+        return new SearchResultPage(webDriver); // Returns a new instance of SearchResultPage
+    }
 }
